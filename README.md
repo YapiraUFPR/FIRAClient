@@ -22,13 +22,26 @@ This project is capable of:
     ```sh
     $ sudo apt install -qq build-essential qtdeclarative5-dev libeigen3-dev protobuf-compiler libprotobuf-dev libdc1394-22 libdc1394-22-dev cmake libv4l-0 libopencv-dev freeglut3-dev python3
     ```
-- FIRASim and VSSSReferee. See [SETUP.md]() to install instructions 
-
+    
 *Tested with: Qt 5.12.8, protoc 3.x, Ubuntu 20.04 LTS. and Ubuntu based Linux (Mint 20.01, Pop!_OS 20.04 LTS)*
+
+## Simulation
+
+FIRAClient was built to communicate with some specific programs:
+
+- [FIRASim](https://github.com/robocin/FIRASim): The simulator containing the field and robot environment.
+- [VSSSReferee](https://github.com/VSSSLeague/VSSReferee): A auxiliary program to detect goals, fouls and deal with game interruptions.
+ 
+You can install this programs following the instructions on [SETUP.md](https://github.com/YapiraUFPR/FIRAClient/blob/main/SETUP.md)
 
 ## Compile
 
- 1. Compile the protobuf files
+ - First clone this repository:
+
+    ```sh
+    git clone https://github.com/YapiraUFPR/FIRAClient.git
+    cd FIRAClient
+    ```
 
  - Run the command bellow to generate and compile the clients and the shared object that will be used on the bridge:
 
@@ -44,6 +57,7 @@ This project is capable of:
     And then you can test run:
 
     ```sh
+    cd ..
     python3 bridge.py
     ```
 
@@ -53,17 +67,16 @@ This project is capable of:
 
     This bridge file will be used on the rest of the pytohn program. main.
 
-    Now you can run the code
+    Now you can run the code (make sure you are running both FIRASim and VSSReferee)
 
     ```sh
     ./main.py
     ```
 ## Usage
 
-You can run the code...
-<!-- TODO -->
+You can run the code by looking at the main.py example and the bridge.py docstrings
 
 ### Contributors: 
 - [Artur Coelho](https://github.com/arturtcoelho) 
-- [](https://github.com/) 
-- [](https://github.com/) 
+- Gabriel Hishida
+- Allan Cedric

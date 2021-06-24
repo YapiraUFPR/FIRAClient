@@ -32,6 +32,11 @@ Now you should be able to run the simulator:
  $ ./bin/FIRASim
  ```
 
+Make sure to be in your desired instalation directory to continue:
+```sh
+$ cd ..
+```
+
 # VSSSReferee
 
 The referee repository can be found [here](https://github.com/VSSSLeague/VSSReferee)

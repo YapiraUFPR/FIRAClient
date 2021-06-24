@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
 
-from bridge import Actuator, Replacer, Vision, Referee, NUM_BOTS, convert_angle
+from bridge import (Actuator, Replacer, Vision, Referee, 
+                        NUM_BOTS, convert_angle, Entity)
 
 from math import pi, fmod, atan2, fabs
 
 def main_strategy(field):
     """Sets all objetives to ball coordinates."""
     ball = field["ball"]
-    objectives = [{"index": i} for i in range(NUM_BOTS)]
+    objectives = [Entity(index=i) for i in range(NUM_BOTS)]
     for obj in objectives:
-        obj["x"] = ball["x"]
-        obj["y"] = ball["y"]
+        obj.x = ball.x
+        obj.y = ball.y
 
     return objectives
 
@@ -27,10 +28,17 @@ def smallestAngleDiff(target, source):
     return a
 
 
-def controller(field, objectives, mray):
-    """Basic PID that sets the speed of each motor to send bot to coordinate"""
-    speeds = [{"index": i} for i in range(NUM_BOTS)]
+def controller(field, objectives):
+    """
+        Basic PID controller that sets the speed of each motor 
+        sends robot to objective coordinate
+        Courtesy of RoboCin
+    """
 
+    speeds = [{"index": i} for i in range(NUM_BOTS)]
+    our_bots = field["our_bots"]
+
+    # for each bot
     for i, s in enumerate(speeds):
         Kp = 20
         Kd = 2.5
@@ -40,17 +48,18 @@ def controller(field, objectives, mray):
         except AttributeError:
             controller.lastError = 0
 
-        rightMotorSpeed = 0
-        leftMotorSpeed = 0
+        right_motor_speed = 0
+        left_motor_speed = 0
 
         reversed = False
+        
+        objective = objectives[i]
+        our_bot = our_bots[i]
 
-        our_bots = field["yellow"] if mray else field["blue"] 
+        angle_rob = our_bot.a
 
-        angle_rob = our_bots[i]["angle"]
-
-        angle_obj = atan2( objectives[i]["y"] - our_bots[i]["y"], 
-                            objectives[i]["x"] - our_bots[i]["x"] )
+        angle_obj = atan2( objective.y - our_bot.y, 
+                            objective.x - our_bot.x )
 
         error = smallestAngleDiff(angle_rob, angle_obj)
 
@@ -59,32 +68,34 @@ def controller(field, objectives, mray):
             angle_rob = convert_angle(angle_rob + pi)
             error = smallestAngleDiff(angle_rob, angle_obj)
 
-        motorSpeed = (Kp * error) + (Kd * (error - controller.lastError))
+        # set motor speed based on error and K constants
+        error_speed = (Kp * error) + (Kd * (error - controller.lastError))
         
         controller.lastError = error
 
         baseSpeed = 30
 
-        motorSpeed = motorSpeed if motorSpeed < baseSpeed else baseSpeed
-        motorSpeed = motorSpeed if motorSpeed > -baseSpeed else -baseSpeed
+        # normalize
+        error_speed = error_speed if error_speed < baseSpeed else baseSpeed
+        error_speed = error_speed if error_speed > -baseSpeed else -baseSpeed
 
-        if (motorSpeed > 0):
-            leftMotorSpeed = baseSpeed
-            rightMotorSpeed = baseSpeed - motorSpeed
+        if (error_speed > 0):
+            left_motor_speed = baseSpeed
+            right_motor_speed = baseSpeed - error_speed
         else:
-            leftMotorSpeed = baseSpeed + motorSpeed
-            rightMotorSpeed = baseSpeed
+            left_motor_speed = baseSpeed + error_speed
+            right_motor_speed = baseSpeed
 
         if (reversed):
-            if (motorSpeed > 0):
-                leftMotorSpeed = -baseSpeed + motorSpeed
-                rightMotorSpeed = -baseSpeed
+            if (error_speed > 0):
+                left_motor_speed = -baseSpeed + error_speed
+                right_motor_speed = -baseSpeed
             else:
-                leftMotorSpeed = -baseSpeed
-                rightMotorSpeed = -baseSpeed - motorSpeed
+                left_motor_speed = -baseSpeed
+                right_motor_speed = -baseSpeed - error_speed
 
-        s["left"] = leftMotorSpeed
-        s["right"] = rightMotorSpeed
+        s["left"] = left_motor_speed
+        s["right"] = right_motor_speed
     return speeds
 
 if __name__ == "__main__":
@@ -110,7 +121,7 @@ if __name__ == "__main__":
 
             objectives = main_strategy(field)
 
-            speeds = controller(field, objectives, mray)
+            speeds = controller(field, objectives)
 
             actuator.send_all(speeds)
 

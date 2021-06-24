@@ -14,11 +14,11 @@ __author__ = "Artur Coelho - github.com/arturtcoelho"
 
 # The main import for this bridge, 
 import ctypes
-# imports used types 
+# imports most used types from ctypes import c_double, \
 from ctypes import (c_double, 
-                    c_char_p, 
-                    c_uint16, 
-                    c_int32, 
+                    c_char_p,
+                    c_uint16,
+                    c_int32,
                     c_bool)
 
 from math import fmod, pi
@@ -58,6 +58,10 @@ LENGTH = 1.7 / 2.0
 WIDTH = 1.3 / 2.0
 
 class Entity():
+    '''
+    Class used to determine the position, speed and direction 
+    of any entity on the field.
+    '''
     def __init__(self, x=0, y=0, vx=0, vy=0, a=0, va=0, index=0):
         self.x = x
         self.y = y
@@ -149,6 +153,10 @@ class Vision():
         return lib.vision_update_field()
         
     def get_field_data(self):
+        '''
+            Returns a dict with the field info, 2 lists of entities
+            one for each team robots and a ball entity
+        '''
         
         field = dict()
         field["mray"] = self.mray
@@ -170,7 +178,7 @@ class Vision():
 
     def get_ball(self):
         """
-        Returns a Object with the ball data
+        Returns a Entity with the ball data
         Use after the update method.
         """
 
@@ -190,7 +198,7 @@ class Vision():
 
     def get_robot(self, index, yellow):
         """
-        Returns a Object with the bot data
+        Returns a Entity with the bot data
         bot is given by index and get_yellow parametres
         Use after the update method.
         """
@@ -249,7 +257,7 @@ class Referee():
 
     def get_data(self):
         """
-        Fills the data structure with the new data from referee
+        Returns a dict with the new data from referee
         or default values (game stoped).
         """
         data = dict()
@@ -340,7 +348,7 @@ class Actuator():
                                     c_double(right))
 
     def send_all(self, speeds):
-        """sends a list of speed commands"""
+        """sends a list of speed commands based on the passed list of dicts"""
         for s in speeds:
             try:
                 self.send(s["index"], s["left"], s["right"])
@@ -385,7 +393,7 @@ class Replacer():
                                     c_double(angle))
 
     def place_all(self, placement):
-        """Sends a list of positions to location"""
+        """Sends a list of Entities locations"""
         for p in placement:
             try:
                 self.place(p.index, p.x, p.y, p.a)

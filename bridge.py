@@ -385,7 +385,10 @@ class Replacer():
                             c_bool(my_robots_are_yellow))
 
     def place(self, index, x, y, angle):
-        """Sends a index indicated bot to x, y and angle."""
+        """
+            Sends a index indicated bot to x, y and angle.
+            *Needs to use seld.send() to actualy send, or use place_all
+        """
         lib.replacer_place_robot(c_int32(index), 
                                     c_double(inverse_length(x)), 
                                     c_double(inverse_width(y)), 
@@ -399,6 +402,10 @@ class Replacer():
             except Exception as e:
                 print("placement exception:", e)
 
+        lib.replacer_send_frame()
+
+    def send(self):
+        '''Actualy sends the frame'''
         lib.replacer_send_frame()
 
     def __del__(self):

@@ -15,11 +15,11 @@ __author__ = "Artur Coelho - github.com/arturtcoelho"
 # The main import for this bridge, 
 import ctypes
 # imports used types 
-from ctypes import c_double, \
-                    c_char_p, \
-                    c_uint16, \
-                    c_int32, \
-                    c_bool
+from ctypes import (c_double, 
+                    c_char_p, 
+                    c_uint16, 
+                    c_int32, 
+                    c_bool)
 
 from math import fmod, pi
 

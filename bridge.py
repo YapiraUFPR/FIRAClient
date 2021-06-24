@@ -79,6 +79,12 @@ def convert_width(w) -> float:
     except TypeError:
         return 0
 
+def inverse_width(w) -> float:
+    try:
+        return (w / 100) - WIDTH
+    except TypeError:
+        return 0
+
 def convert_length(d) -> float:
     """
     Converts width from the simulator data to centimetres
@@ -86,6 +92,12 @@ def convert_length(d) -> float:
     """
     try:
         return (LENGTH + d) * 100
+    except TypeError:
+        return 0
+
+def inverse_length(d) -> float:
+    try:
+        return (d / 100) - LENGTH
     except TypeError:
         return 0
 
@@ -366,9 +378,10 @@ class Replacer():
 
     def place(self, index, x, y, angle):
         """Sends a index indicated bot to x, y and angle."""
+        print(x, y, angle)
         lib.replacer_place_robot(c_int32(index), 
-                                    c_double(x), 
-                                    c_double(y), 
+                                    c_double(inverse_length(x)), 
+                                    c_double(inverse_width(y)), 
                                     c_double(angle))
 
     def place_all(self, placement):

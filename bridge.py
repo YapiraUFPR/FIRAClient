@@ -386,7 +386,6 @@ class Replacer():
 
     def place(self, index, x, y, angle):
         """Sends a index indicated bot to x, y and angle."""
-        print(x, y, angle)
         lib.replacer_place_robot(c_int32(index), 
                                     c_double(inverse_length(x)), 
                                     c_double(inverse_width(y)), 

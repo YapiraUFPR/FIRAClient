@@ -299,7 +299,6 @@ extern "C"
     // initialize class with address, port number and color 
     void replacer_init(char *addr, uint16_t port, bool mray)
     {
-        std::cout << "Replacer initialized on " << addr << ":" << port << "\n";
         replacer = new ReplacerClient(addr, port);
         replacer->setTeamColor(mray
                                 ? VSSRef::Color::YELLOW 

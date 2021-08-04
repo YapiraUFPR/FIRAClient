@@ -21,7 +21,7 @@ from ctypes import (c_double,
                     c_int32,
                     c_bool)
 
-from math import fmod, pi
+from math import fmod, pi, degrees
 
 # Loads the compiled shared library based on libfira.cpp
 # See README.md to compile and usage
@@ -70,6 +70,9 @@ class Entity():
         self.a = a 
         self.va = va
         self.index = index
+    
+    def __str__(self) -> str:
+        return f"{self.x}, {self.y}, {self.a}"
 
 # youcan remove or modify these functions as you wish, 
 # these are used here mainly to run the example main 
@@ -398,7 +401,7 @@ class Replacer():
         """Sends a list of Entities locations"""
         for p in placement:
             try:
-                self.place(p.index, p.x, p.y, p.a)
+                self.place(p.index, p.x, p.y, degrees(p.a))
             except Exception as e:
                 print("placement exception:", e)
 

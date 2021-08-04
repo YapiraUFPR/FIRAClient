@@ -111,15 +111,17 @@ def inverse_length(d) -> float:
 def convert_angle(a) -> float:
     """
     Converts the angle from full radians to 
-    -Pi/2 to Pi/2 radians range
+    -Pi to Pi radians range
     """
     try:
-        angle = fmod(a, 2*pi)
-        if (angle < -pi):
-            return angle + 2*pi
-        if (angle > pi):
-            return angle - 2*pi
-        return angle
+        if a > 0:
+            if a > pi:
+                return a - 2*pi
+        else:
+            if a < -pi:
+                return a + 2*pi
+        return a
+
     except TypeError:
         return 0
 
@@ -359,6 +361,7 @@ class Actuator():
                 print("speed exception:", e)
 
     def stop(self):
+        """Sets all speeds to zero"""
         for i in range(NUM_BOTS):
             self.send(i, 0, 0)
 

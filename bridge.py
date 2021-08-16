@@ -21,7 +21,7 @@ from ctypes import (c_double,
                     c_int32,
                     c_bool)
 
-from math import fmod, pi, degrees
+from math import fmod, pi, degrees, sqrt
 
 # Loads the compiled shared library based on libfira.cpp
 # See README.md to compile and usage
@@ -71,8 +71,11 @@ class Entity():
         self.va = va
         self.index = index
     
+    def distance_to(self, b):
+        return sqrt((self.x-b.x)**2+(self.y-b.y)**2)
+
     def __str__(self) -> str:
-        return f"{self.x}, {self.y}, {self.a}"
+        return f"Entity: {self.x}, {self.y}, {self.a}"
 
 # youcan remove or modify these functions as you wish, 
 # these are used here mainly to run the example main 

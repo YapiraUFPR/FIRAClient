@@ -87,6 +87,9 @@ class Entity():
     def __str__(self) -> str:
         return f"Entity: {self.x}, {self.y}, {self.a}"
 
+    def __repr__(self) -> str:
+        return self.__str__()
+
 # youcan remove or modify these functions as you wish, 
 # these are used here mainly to run the example main 
 def convert_width(w) -> float:

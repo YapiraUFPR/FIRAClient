@@ -289,7 +289,7 @@ class Referee():
             data["quad"] = self.get_quadrant()
             
             data["game_on"] = data["foul"] == 6
-            data["our"] = data["yellow"] and self.mray
+            data["our"] = data["yellow"] == self.mray
             data["is_game_halt"] = data["foul"] == 7
         except TypeError:
             return None

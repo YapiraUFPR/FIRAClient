@@ -54,8 +54,8 @@ lib.vision_robot_vangle.restype = c_double
 
 NUM_BOTS = 3
 
-LENGTH = 1.7 / 2.0
-WIDTH = 1.3 / 2.0
+# LENGTH = 1.7 / 2.0
+# WIDTH = 1.3 / 2.0
 
 class Entity():
     '''
@@ -98,13 +98,13 @@ def convert_width(w) -> float:
     with origin point on bottom left corner of field
     """
     try:
-        return (WIDTH + w) * 100 
+        return w * 100 
     except TypeError:
         return 0
 
 def inverse_width(w) -> float:
     try:
-        return (w / 100) - WIDTH
+        return (w / 100) 
     except TypeError:
         return 0
 
@@ -114,13 +114,13 @@ def convert_length(d) -> float:
     with origin point on bottom left corner of field
     """
     try:
-        return (LENGTH + d) * 100
+        return d * 100
     except TypeError:
         return 0
 
 def inverse_length(d) -> float:
     try:
-        return (d / 100) - LENGTH
+        return (d / 100)
     except TypeError:
         return 0
 
